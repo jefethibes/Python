@@ -3,57 +3,42 @@ from pymongo import MongoClient
 
 class ConectaMongo:
 
-    def salvar(self, json):
+    def __init__(self):
         try:
-            conexao = MongoClient('localhost', 27017)
-            banco = conexao.imobiliaria
-            novo_imovel = banco.imovel
-            id = novo_imovel.insert_one(json).inserted_id
+            self.mongo = MongoClient('localhost', 27017)
+            self.banco = self.mongo.imobiliaria
+            self.colecao = self.banco.imovel
         except Exception as e:
-            print('problema ao salvar registro')
-            print(json)
+            print('Problema ao conectar no banco!')
             print(e)
 
-    def listar_codigo(self, json):
+    def salvar(self, json):
         try:
-            conexao = MongoClient('localhost', 27017)
-            banco = conexao.imobiliaria
-            listar = banco.imovel
-            id = listar.find_one(json)
+            self.colecao.insert_one(json)
         except Exception as e:
-            print('problema ao listar registro')
+            print('Problema ao salvar registro!')
             print(json)
             print(e)
 
     def listar_todos(self):
         try:
-            conexao = MongoClient('localhost', 27017)
-            banco = conexao.imobiliaria
-            litar = banco.imovel
-            for itens in litar.find():
-                print(itens)
+            return self.colecao.find()
         except Exception as e:
-            print('problema ao listar registros')
+            print('Problema ao listar registros!')
+            print(e)
+
+    def listar_codigo(self, json):
+        try:
+            return self.colecao.find_one(json)
+        except Exception as e:
+            print('Problema ao listar registro!')
+            print(json)
             print(e)
 
     def remover(self, json):
         try:
-            conexao = MongoClient('localhost', 27017)
-            banco = conexao.imobiliaria
-            remover = banco.imovel
-            id = remover.remove(json)
+            self.colecao.remove(json)
         except Exception as e:
-            print('problema ao remover registro')
+            print('Problema ao remover registro!')
             print(json)
-            print(e)
-
-    def alterar(self, json, novo_json):
-        try:
-            conexao = MongoClient('localhost', 27017)
-            banco = conexao.imobiliaria
-            altera = banco.imovel
-            id = altera.update(json, novo_json)
-        except Exception as e:
-            print('problema ao alterar registro')
-            print(json, novo_json)
             print(e)

@@ -1,28 +1,59 @@
 from Conexao import ConectaMongo
+from random import randint
 
 
-class Imovel:
+class Imoveis:
 
-    def salvar_imovel(self, codigo, endereco, numero, valor):
-        conexao = ConectaMongo()
+    def __init__(self):
+        self.conexao = ConectaMongo()
+
+    def gera_codigo(self):
+        codigo = randint(100, 1000)
+        return codigo
+
+    def novo_imovel(self):
+        codigo = self.gera_codigo()
+        endereco = input('Endereço: ')
+        numero = input('Número(caso ap pode usar letras): ')
+        while True:
+            try:
+                valor = float(input('Valor: R$ '))
+                if valor > 0:
+                    break
+                else:
+                    print('Valor inválido!')
+
+            except ValueError:
+                print('Valor inválido!')
+
         imovel = {'codigo': codigo, 'endereco': endereco, 'numero': numero, 'valor': valor}
-        print(imovel)
-        conexao.salvar(imovel)
-
-    def listar_imovel(self, codigo):
-        conexao = ConectaMongo()
-        conexao.listar_codigo({'codigo': codigo})
+        self.conexao.salvar(imovel)
 
     def listar_imoveis(self):
-        conexao = ConectaMongo()
-        conexao.listar_todos()
+        for itens in self.conexao.listar_todos():
+            print(itens)
 
-    def deletar_imovel(self, codigo):
-        conexao = ConectaMongo()
-        conexao.remover({'codigo': codigo})
-        print('Imovel removido com sucesso!')
+    def listar_imovel(self):
+        while True:
 
-    def alterar_imovel(self, codigo, novo_imovel):
-        conexao = ConectaMongo()
-        conexao.alterar(codigo, novo_imovel)
+            try:
+                codigo = int(input('Código do imóvel: '))
+                break
 
+            except ValueError:
+                print('Código inválido!')
+
+        print(self.conexao.listar_codigo({'codigo': codigo}))
+
+    def remover_imovel(self):
+        while True:
+
+            try:
+                codigo = int(input('Código do imóvel: '))
+                break
+
+            except ValueError:
+                print('Código inválido!')
+
+        self.conexao.remover({'codigo': codigo})
+        print('Registro removido com sucesso!')
