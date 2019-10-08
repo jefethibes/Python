@@ -1,5 +1,6 @@
 from Conexao import ConectaMongo
 from random import randint
+from pprint import pprint
 
 
 class Imoveis:
@@ -31,7 +32,8 @@ class Imoveis:
 
     def listar_imoveis(self):
         for itens in self.conexao.listar_todos():
-            print(itens)
+            pprint(itens)
+            print('-----------------------------')
 
     def listar_imovel(self):
         while True:
@@ -43,7 +45,7 @@ class Imoveis:
             except ValueError:
                 print('Código inválido!')
 
-        print(self.conexao.listar_codigo({'codigo': codigo}))
+        pprint(self.conexao.listar_codigo({'codigo': codigo}))
 
     def remover_imovel(self):
         while True:

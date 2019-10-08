@@ -20,16 +20,16 @@ class ConectaMongo:
             print(json)
             print(e)
 
-    def listar_todos(self):
+    def listar_todos(self, query=None):
         try:
-            return self.colecao.find()
+            return self.colecao.find(query, {'_id': 0})
         except Exception as e:
             print('Problema ao listar registros!')
             print(e)
 
     def listar_codigo(self, json):
         try:
-            return self.colecao.find_one(json)
+            return self.colecao.find_one(json, {'_id': 0})
         except Exception as e:
             print('Problema ao listar registro!')
             print(json)
