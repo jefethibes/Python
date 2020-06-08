@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block logout %}
+    {% if permissao == 'Administrador' %}
+        <li><a href="/chamados_ti">Chamados TI</a></li>
+        <li><a href="/chamados_manutencao">Chamandos Manutenção</a></li>
+        <li><a href="/administracao">Administração</a></li>
+    {% elif permissao == 'Suporte TI' %}
+        <li><a href="/chamados_ti">Chamados TI</a></li>
+    {% elif permissao == 'Suporte Manutenção' %}
+        <li><a href="/chamados_manutencao">Chamados Manutenção</a></li>
+    {% endif %}
+    <li><a href="/logout">Logout</a></li>
+{% endblock %}
+
+{% block content %}
+    <div class="container text-center">
+        <h1>Encerrar Chamado!</h1>
+        {% from "macro.html" import render_field %}
+        <form method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div>
+                <label>Setor:</label>
+                <input type="text" disabled="disabled" value="{{ itens['setor'] }}"></input>
+            </div>
+            {% if itens['urgencia'] %}
+                <div>
+                    <label>Ungência:</label>
+                    <input type="text" disabled="disabled" value="{{ itens['urgencia'] }}"></input>
+                </div>
+            {% elif itens['modelo']%}
+                <div>
+                    <label>Modelo:</label>
+                    <input type="text" disabled="disabled" value="{{ itens['modelo'] }}"></input>
+                </div>
+            {% endif %}
+            <div>
+                <label>Título:</label>
+                <input type="text" disabled="disabled" value="{{ itens['titulo'] }}"></input>
+            </div>
+            <div>
+                <label>Comentario:</label>
+                <input type="text" disabled="disabled" value="{{ itens['comentario'] }}"></input>
+            </div>
+            <div>
+                <label>Data Abertura:</label>
+                <input type="text" disabled="disabled" value="{{ itens['data_abertura'] }}"></input>
+            </div>
+            <div>
+                {{ render_field(field.comentario, class='form-control', placeholder='Comentario de encerramento', maxlength='100')}}
+            </div>
+            <button type="submit" value="encerrar">Encerrar</button>
+        </form>
+    </div>
+{% endblock %}

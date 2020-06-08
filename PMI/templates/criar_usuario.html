@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Manutenção{% endblock %}
+
+{% block logout %}
+    {% if permissao == 'Administrador' %}
+        <li><a href="/chamados_ti">Chamados TI</a></li>
+        <li><a href="/chamados_manutencao">Chamandos Manutenção</a></li>
+        <li><a href="/administracao">Administração</a></li>
+    {% elif permissao == 'Suporte TI' %}
+        <li><a href="/chamados_ti">Chamados TI</a></li>
+    {% elif permissao == 'Suporte Manutenção' %}
+        <li><a href="/chamados_manutencao">Chamados Manutenção</a></li>
+    {% endif %}
+    <li><a href="/logout">Logout</a></li>
+{% endblock %}
+
+{% block content %}
+    <div class="container text-center">
+        {% from "macro.html" import render_field %}
+        <form method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div>
+                {{ render_field(field.usuario, class='form-control', placeholder='Usuario', maxlength='15')}}
+            </div>
+            <div>
+                {{ render_field(field.senha, class='form-control', placeholder='Senha', maxlength='20')}}
+            </div>
+            <br>
+            <label>
+                <select name="setor">
+                    {% for setor in setores %}
+                        <option>{{ setor }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <div>
+                {{ render_field(field.nome, class='form-control', placeholder='Nome', maxlength='20')}}
+            </div>
+            <div>
+                {{ render_field(field.sobrenome, class='form-control', placeholder='Sobrenome', maxlength='50')}}
+            </div>
+            <div>
+                {{ render_field(field.email, class='form-control', placeholder='E-mail', maxlength='50')}}
+            </div>
+            <br>
+            <label>
+                <select name="status">
+                    <option>Ativo</option>
+                    <option>Bloqueado</option>
+                </select>
+            </label>
+            <br>
+            <label>
+                <select name="permissao">
+                    <option>Colaborador</option>
+                    <option>Suporte TI</option>
+                    <option>Suporte Manutenção</option>
+                    <option>Administrador</option>
+                </select>
+            </label>
+            <br>
+            <button type="submit" value="enviar">Enviar</button>
+        </form>
+    </div>
+{% endblock %}
